@@ -27,28 +27,31 @@ using PyPlot
 include("general_renor_functs_final.jl")
 ################################
 
-m=3;  # Renormalization order
-
-d = 2; # Degree of the fixed point
-
-ver=1; # index of fixed point, after m=5 there is more that one
-
-
 pre=2^8
 setprecision(pre);
 setprecision(Interval, pre);
 
-global K0 = 100; # Chebyshev x order
+
+m = 10;  # Renormalization order
+
+d = 2; # Degree of the fixed point
+
+ver = 3; # index of fixed point, starting from m=5 there is more that one
+
+rho = Interval(BigFloat(1.9)); #Bernstein ellipse radius
+
+rstar = BigFloat(10.0)^(-32) # rstar radius in the contraction proofs
+
+global K0 = 40; # Chebyshev order (the actual order is in fact 2K)
+
+
+###############################################
 
 dK= Integer(maximum([ ceil(0.05*K0), 2]))
 
 
 global K= copy(K0); 
 
-
-rho = Interval(BigFloat(1.18)); #Bernstein ellipse radius
-
-rstar = BigFloat(10.0)^(-45)
 
 # weights, with a 1 for the alpha component
 ind_k = 0:2:2*K;
@@ -589,11 +592,6 @@ cste_Z1inf(rho,alpha)= Upsilon(rho,alpha,1,0,2*K);
 ##############################
 tol=10^(-2);
 
-#####################
-# @time alpha_Z1inf = opt_para(func_alpham, mid(rho), cste_Z1inf, alpha_max,tol,sub3); 
-
-# this=Interval(alpha_Z1inf[1])
-
 ###############################################
 
 nb=500; 
@@ -644,8 +642,7 @@ for n=0:m-2
 
     thisconst= cste_Z1inf(rho,foo)
 
-    #@time temp= compute_sup_E([thisterm],foo,sub3,nb3)
-
+    #@time temp= compute_sup_E([thisterm],foo,sub3,nb3) #keep here
     
     subtol= 0.5*10.0^(ceil(log(10,sup(10.0^(-1)/(thisconst)))))
         
@@ -677,7 +674,7 @@ serialize("Z1inf0", Z1inf0)
 ################################################
 ######################################## rstar
 
-### Checking whether we can apply Banch fixed point theorem
+### Checking whether we can apply Banach fixed point theorem
 Y = YK+Yinf;
 Z1 = Z1KK + Z1Kinf + Z1inf;
 rmin = sup(Y/(1-Z1));
@@ -703,7 +700,6 @@ rmin0= copy(rmin)
 
 serialize("rmin0_"*string(m), rmin0)
 
-#stopHere
 #########################################################################
 ############################ start eigen ###############################
 ############################################################################
@@ -718,7 +714,7 @@ jacF_alpha= "";
 
 alphaf, Rf0, DRf0, = Rm_DRm_even_1Dv1i(f0,m,x_K,MKinv,jacF_alpha,alpha);
 
-##
+
 ###########################################################################
 ################################ Z1Kinf
 
@@ -824,11 +820,6 @@ cste_Z1inf(rho,alpha)= Upsilon(rho,alpha,1,0,2*K);
 
 ##########################################
 
-# @time alpha_Z1inf = opt_para(ffl, mid(rho), cste_Z1inf, alpha_max,tol,sub3); 
-
-# this=Interval(alpha_Z1inf[1])
-
-##################################################
 
 nb=500; 
 sub = BigFloat.(range(0,2*pi,nb)); 
@@ -859,10 +850,6 @@ end
 
 ###############################
 
-# @time alpha_Z1inf = opt_para(term1, mid(rho), cste_Z1inf, alpha_max,tol,sub3);   
-# this=Interval(alpha_Z1inf[1])
-
-####################################
 
 nb=500; 
 sub = BigFloat.(range(0,2*pi,nb)); 
