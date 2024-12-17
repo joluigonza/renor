@@ -1,4 +1,5 @@
-This repository contains the Julia code associated with the paper "Validated enclosure of renormalization fixed points via Chebyshev series and the DFT" by Maxime Breden, Jorge Gonzalez, and J.D Mireles James (https://arxiv.org/pdf/2409.20457, https://www.researchgate.net/publication/384471124_Validated_enclosure_of_renormalization_fixed_points_via_Chebyshev_series_and_the_DFT)
+This repository contains the Julia code associated with the paper "Validated enclosure of renormalization fixed points via Chebyshev series and the DFT" by Maxime Breden, Jorge Gonzalez, and J.D Mireles James (https://arxiv.org/pdf/2409.20457, 
+https://www.researchgate.net/publication/387130886_Validated_enclosure_of_renormalization_fixed_points_via_Chebyshev_series_and_the_DFT)
 
 Instructions to run the code:
 
