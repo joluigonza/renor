@@ -2,7 +2,6 @@ import Pkg;
 
 export dropdims
 
-
 using LinearAlgebra
 
 using IntervalArithmetic
@@ -21,6 +20,39 @@ using TickTock
 
 using PyPlot
 
+#=
+#ENV["PYTHON"] = "C:\\Users\\jorge\\anaconda3\\python.exe"
+
+ENV["PYTHON"]= "C:\\Users\\jorge\\.julia\\conda\\3\\python.exe"
+
+using Pkg
+Pkg.add("PyCall")
+Pkg.build("PyCall")
+Pkg.add("PyPlot")
+# make sure:  conda install matplotlib (to install matplotlib in python)
+using PyCall
+PyCall.python
+
+using PyPlot
+pygui(true)
+plot(1:10, rand(10))
+
+using PyPlot
+println(PyPlot.matplotlib.get_backend())
+
+PyPlot.matplotlib.use("TkAgg")  # or "Qt5Agg"
+pygui(true)
+plot(1:10, rand(10))
+
+using Conda
+Conda.add("tk")        # for TkAgg
+
+
+using PyPlot
+pygui(true)
+plot(1:10, rand(10))
+
+=#
 #############################
 
 
@@ -36,13 +68,13 @@ m = 10;  # Renormalization order
 
 d = 2; # Degree of the fixed point
 
-ver = 3; # index of fixed point, starting from m=5 there is more that one
+ver = 3; # index of fixed point, after m=5 there is more that one
 
 rho = Interval(BigFloat(1.9)); #Bernstein ellipse radius
 
 rstar = BigFloat(10.0)^(-32) # rstar radius in the contraction proofs
 
-global K0 = 40; # Chebyshev order (the actual order is in fact 2K)
+global K0 = 40; # Chebyshev x order
 
 
 ###############################################
@@ -734,7 +766,7 @@ thisZ1Kinf_1D0f= num_Z1Kinf_1D0(m,Z1KinfUpsilon);
 thisterm1=forterm1 .* df_fksalphax[:,1];
 
 
-PiKDPhi= [1/BigFloat(2.0)^(2*K); abs.(MKinv)*num_DRf_even_1Dv1(m, thisZ1Kinf0_1D0, thisZ1Kinf_1D0f, thisterm1)];
+PiKDPhi= [1/BigFloat(mid(rho))^(2*K); abs.(MKinv)*num_DRf_even_1Dv1(m, thisZ1Kinf0_1D0, thisZ1Kinf_1D0f, thisterm1)];
 
 ##############################################
 ############################################################
